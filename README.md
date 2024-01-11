@@ -1,3 +1,12 @@
+# 
+
+```
+apt install -y git vim
+git clone -b stratux-companion-customizations --recursive --depth=1 https://github.com/sashgorokhov/stratux.git
+```
+
+
+
 # Stratux - European edition
 **Users from the US, see here: https://github.com/b3nn0/stratux/wiki/US-configuration**
 

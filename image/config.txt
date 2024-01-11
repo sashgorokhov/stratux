@@ -1,6 +1,6 @@
 # RPi /boot/config.txt
 
-dtparam=audio=on
+# dtparam=audio=on
 max_usb_current=1
 dtparam=i2c_arm=on
 dtparam=i2c1=on
@@ -24,3 +24,6 @@ core_freq=450
 arm_freq=900
 
 arm_64bit=1
+
+dtoverlay=hifiberry-dac
+dtoverlay=i2s-mmap

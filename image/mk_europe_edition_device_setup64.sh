@@ -162,7 +162,10 @@ cp -f modules.txt /etc/modules
 cp -f config.txt /boot/
 
 # stratux config
-cp -f stratux.conf /
+cp -f stratux.conf /boot/
+
+# sound config
+cp -f asound.conf /etc
 
 #Create default pi password as in old times, and disable initial user creation
 systemctl disable userconfig
@@ -199,17 +202,17 @@ sed -i /etc/hosts -e "s/raspberrypi/stratux/g"
 
 
 # Uninstall packages we don't need, clean up temp stuff
-rm -rf /root/go /root/go_path /root/.cache
+#rm -rf /root/go /root/go_path /root/.cache
 
 #PATH=/root/fake:$PATH apt remove --purge --yes alsa-ucm-conf alsa-topology-conf bluez bluez-firmware cifs-utils cmake cmake-data \
 #    v4l-utils rsync pigz pi-bluetooth cpp cpp-10  zlib1g-dev
 
-PATH=/root/fake:$PATH apt autoremove --purge --yes
+# PATH=/root/fake:$PATH apt autoremove --purge --yes
 
-apt clean
-rm -rf /var/cache/apt
+#apt clean
+#rm -rf /var/cache/apt
 
-rm -r /root/fake
+#rm -r /root/fake
 
 
 #umount /proc
