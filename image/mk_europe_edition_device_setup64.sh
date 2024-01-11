@@ -4,24 +4,24 @@
 # This script is called by mk_europe_edition.sh via qemu
 set -ex
 
-mount -t proc proc /proc
+#mount -t proc proc /proc
 
 cd /root/stratux
 
 # Make sure that the upgrade doesn't restart services in the chroot..
 mkdir /root/fake
-ln -s /bin/true /root/fake/initctl
-ln -s /bin/true /root/fake/invoke-rc.d
-ln -s /bin/true /root/fake/restart
-ln -s /bin/true /root/fake/start
-ln -s /bin/true /root/fake/stop
-ln -s /bin/true /root/fake/start-stop-daemon
-ln -s /bin/true /root/fake/service
-ln -s /bin/true /root/fake/deb-systemd-helper
-ln -s /bin/true /root/fake/deb-systemd-invoke
+#ln -s /bin/true /root/fake/initctl
+#ln -s /bin/true /root/fake/invoke-rc.d
+#ln -s /bin/true /root/fake/restart
+#ln -s /bin/true /root/fake/start
+#ln -s /bin/true /root/fake/stop
+#ln -s /bin/true /root/fake/start-stop-daemon
+#ln -s /bin/true /root/fake/service
+#ln -s /bin/true /root/fake/deb-systemd-helper
+#ln -s /bin/true /root/fake/deb-systemd-invoke
 
 # Fake a proc FS for raspberrypi-sys-mods_20170519_armhf... Extend me as needed
-mkdir -p /proc/sys/vm/
+#mkdir -p /proc/sys/vm/
 
 apt update
 apt clean
@@ -40,9 +40,9 @@ PATH=/root/fake:$PATH apt install --yes libjpeg62-turbo-dev libconfig9 rpi-updat
 # try to reduce writing to SD card as much as possible, so they don't get bricked when yanking the power cable
 # Disable swap...
 systemctl disable dphys-swapfile
-apt purge -y dphys-swapfile
-apt autoremove -y
-apt clean
+#apt purge -y dphys-swapfile
+#apt autoremove -y
+#apt clean
 #echo y | rpi-update
 
 
@@ -104,9 +104,9 @@ cd /root && rm -rf kalibrate-rtl
 
 
 # Prepare wiringpi for ogn trx via GPIO
-cd /root && git clone https://github.com/WiringPi/WiringPi.git
-cd WiringPi && ./build
-cd /root && rm -r WiringPi
+#cd /root && git clone https://github.com/WiringPi/WiringPi.git
+#cd WiringPi && ./build
+#cd /root && rm -r WiringPi
 
 # Debian seems to ship with an invalid pkgconfig for librtlsdr.. fix it:
 #sed -i -e 's/prefix=/prefix=\/usr/g' /usr/lib/arm-linux-gnueabihf/pkgconfig/librtlsdr.pc
@@ -125,11 +125,11 @@ make clean
 make -j8
 
 # Now also prepare the update file..
-cd /root/stratux/selfupdate
-./makeupdate.sh
-mv /root/stratux/work/update-*.sh /root/
-rm -r /root/stratux/work
-cd /root/stratux
+#cd /root/stratux/selfupdate
+#./makeupdate.sh
+#mv /root/stratux/work/update-*.sh /root/
+#rm -r /root/stratux/work
+#cd /root/stratux
 
 
 rm -r /root/go_path/* # safe space again..
@@ -161,16 +161,19 @@ cp -f modules.txt /etc/modules
 #boot settings
 cp -f config.txt /boot/
 
+# stratux config
+cp -f stratux.conf /
+
 #Create default pi password as in old times, and disable initial user creation
 systemctl disable userconfig
 echo "pi:raspberry" | chpasswd
 
 #rootfs overlay stuff
-cp -f overlayctl init-overlay /sbin/
-overlayctl install
-# init-overlay replaces raspis initial partition size growing.. Make sure we call that manually (see init-overlay script)
-touch /var/grow_root_part
-mkdir -p /overlay/robase # prepare so we can bind-mount root even if overlay is disabled
+#cp -f overlayctl init-overlay /sbin/
+#overlayctl install
+## init-overlay replaces raspis initial partition size growing.. Make sure we call that manually (see init-overlay script)
+#touch /var/grow_root_part
+#mkdir -p /overlay/robase # prepare so we can bind-mount root even if overlay is disabled
 
 # So we can import network settings if needed
 touch /boot/.stratux-first-boot
@@ -192,14 +195,14 @@ echo "stratux" > /etc/hostname
 sed -i /etc/hosts -e "s/raspberrypi/stratux/g"
 
 # Clean up source tree - we don't need it at runtime
-rm -r /root/stratux
+#rm -r /root/stratux
 
 
 # Uninstall packages we don't need, clean up temp stuff
 rm -rf /root/go /root/go_path /root/.cache
 
-PATH=/root/fake:$PATH apt remove --purge --yes alsa-ucm-conf alsa-topology-conf bluez bluez-firmware cifs-utils cmake cmake-data \
-    v4l-utils rsync pigz pi-bluetooth cpp cpp-10  zlib1g-dev
+#PATH=/root/fake:$PATH apt remove --purge --yes alsa-ucm-conf alsa-topology-conf bluez bluez-firmware cifs-utils cmake cmake-data \
+#    v4l-utils rsync pigz pi-bluetooth cpp cpp-10  zlib1g-dev
 
 PATH=/root/fake:$PATH apt autoremove --purge --yes
 
@@ -209,4 +212,4 @@ rm -rf /var/cache/apt
 rm -r /root/fake
 
 
-umount /proc
+#umount /proc
