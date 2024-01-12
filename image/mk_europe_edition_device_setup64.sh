@@ -39,7 +39,7 @@ PATH=/root/fake:$PATH apt install --yes libjpeg62-turbo-dev libconfig9 rpi-updat
 
 # try to reduce writing to SD card as much as possible, so they don't get bricked when yanking the power cable
 # Disable swap...
-# systemctl disable dphys-swapfile
+systemctl disable dphys-swapfile
 #apt purge -y dphys-swapfile
 #apt autoremove -y
 #apt clean
@@ -49,15 +49,15 @@ PATH=/root/fake:$PATH apt install --yes libjpeg62-turbo-dev libconfig9 rpi-updat
 systemctl enable ssh
 systemctl disable dnsmasq # we start it manually on respective interfaces
 systemctl disable dhcpcd
-#systemctl disable hciuart
-#systemctl disable triggerhappy
+systemctl disable hciuart
+systemctl disable triggerhappy
 systemctl disable wpa_supplicant
-#systemctl disable systemd-timesyncd # We sync time with GPS. Make sure there is no conflict if we have internet connection
+systemctl disable systemd-timesyncd # We sync time with GPS. Make sure there is no conflict if we have internet connection
 #
 #
-#systemctl disable apt-daily.timer
-#systemctl disable apt-daily-upgrade.timer
-#systemctl disable man-db.timer
+systemctl disable apt-daily.timer
+systemctl disable apt-daily-upgrade.timer
+systemctl disable man-db.timer
 
 # Run DHCP on eth0 when cable is plugged in
 sed -i -e 's/INTERFACES=""/INTERFACES="eth0"/g' /etc/default/ifplugd
